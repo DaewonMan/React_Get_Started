@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const root = document.getElementById("root");
+      
+        const [count, setCount] = useState(0);
+
+        // 3.0 Understanding State
+        // let counter = 0;
+        // const countUp = () => { 
+        //     counter += 1;
+        //     render();
+        // };
+        
+        const render = () => {
+            ReactDOM.render(<Container />, root);
+        };
+
+        const Container = () => {
+            return (
+                <div>
+                    <h3>Total clicks: {count}</h3>
+                    <button onClick={setCount}>Click me</button>
+                </div>
+            );
+        };
+
+        render();
+    </script>
+</html>
