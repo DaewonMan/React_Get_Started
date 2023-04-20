@@ -1,11 +1,11 @@
 import styles from './App.module.css';
-import Button from './Button';
+import * as Cpt from './components';
 
 function App() {
   return (
     <div>
       <h1 className={styles.title}>test</h1>
-      <Button text={'test'}/>
+      <Cpt.Button text={'test'}/>
     </div>
   );
 }
