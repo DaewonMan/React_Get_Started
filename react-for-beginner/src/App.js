@@ -1,10 +1,11 @@
-import logo from './logo.svg';
-import './App.css';
+import styles from './App.module.css';
+import Button from './Button';
 
 function App() {
   return (
-    <div className="App">
-      <h1>test</h1>
+    <div>
+      <h1 className={styles.title}>test</h1>
+      <Button text={'test'}/>
     </div>
   );
 }
