@@ -1,11 +1,21 @@
+import { useState, useEffect } from 'react';
 import styles from './App.module.css';
 import * as Cpt from './components';
+import _ from 'lodash';
+
+const Hello = () => {
+  return (
+    <h1>Hello</h1>
+  );
+};
 
 function App() {
+  const [showing, setShowing] = useState(false);
+  const onClick = () => {};
+  
   return (
     <div>
-      <h1 className={styles.title}>test</h1>
-      <Cpt.Button text={'test'}/>
+      <Cpt.Button text={'test'} onClick={onClick} />
     </div>
   );
 }
