@@ -43,6 +43,13 @@ const MyRenderer = (params) => {
   );
 };
 
+const styles = {
+  active: {
+    backgroundColor: 'blue',
+    color: 'white'
+  }
+};
+
 const Home = () => {
   const { isCallApi, setIsCallApi } = useContext(ApiContext);
 
@@ -134,14 +141,20 @@ const Home = () => {
       <Cpt.Button text={'test'} onClick={onClick} />
       {/* https://mui.com/material-ui/react-table/ (mui 참고) */}
 
-      <ButtonGroup 
-        variant="outlined" 
-        aria-label="outlined button group"
-        onClick={buttonGrpClick}
-      >
-        <Button id="all" style={{backgroundColor: showArea == 'all' ? 'red': null}}>전체</Button>
-        <Button id="person" style={{backgroundColor: showArea == 'person' ? 'red': null}}>개인</Button>
-      </ButtonGroup>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end'
+      }}>
+        <ButtonGroup 
+          variant="outlined" 
+          aria-label="outlined button group"
+          onClick={buttonGrpClick}
+        >
+          <Button id="all" style={showArea == 'all' ? styles.active : null}>전체</Button>
+          <Button id="person" style={showArea == 'person' ? styles.active : null}>개인</Button>
+        </ButtonGroup>
+      </div>
 
       <AgGridReact
         className="ag-theme-alpine"
