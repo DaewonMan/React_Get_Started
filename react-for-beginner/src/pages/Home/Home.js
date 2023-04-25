@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useMemo, memo, useContext  } from 'react';
-import * as Cpt from '../../components';
-import { testCall } from '../../utils/utils';
-import { getData, get } from '../../utils/api';
+import React, { useState, useEffect, useMemo, memo, useContext, useCallback  } from 'react';
+import * as Cpt from 'components';
+import * as utils from 'utils/utils';
+import * as api from 'utils/api';
 
 import { AgGridReact } from 'ag-grid-react';
 
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
-import { ApiContext } from '../../App';
+import { ApiContext } from 'App';
 // import { AgGridReact } from '@ag-grid-community/react';
 // import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 // import { RangeSelectionModule } from '@ag-grid-enterprise/range-selection';
@@ -41,6 +41,7 @@ const MyRenderer = (params) => {
 
 const Home = () => {
   const { isCallApi, setIsCallApi } = useContext(ApiContext);
+
   const columnDefs = useMemo(() => [
     { field: 'athlete' },
     { field: 'age'},
@@ -57,34 +58,44 @@ const Home = () => {
   // never changes, so we can use useMemo
   const defaultColDef = useMemo(() => ({
       resizable: true,
-      sortable: true
+      sortable: true,
+      cellStyle: { textAlign: 'center' }
   }), []);
+
+  const statusBar = useMemo(() => {
+    return {
+      statusPanels: [
+        { statusPanel: 'agTotalAndFilteredRowCountComponent', align: 'left' },
+        { statusPanel: 'agTotalRowCountComponent', align: 'center' },
+        { statusPanel: 'agFilteredRowCountComponent' },
+        { statusPanel: 'agSelectedRowCountComponent' },
+        { statusPanel: 'agAggregationComponent' },
+      ],
+    };
+  }, []);
 
   // changes, needs to be state
   const [rowData, setRowData] = useState();
-
-  // gets called once, no dependencies, loads the grid data
-  useEffect(() => {
+  
+  const onClick = useCallback(() => {
     setIsCallApi(true);
-    // fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
-    //     .then(resp => resp.json())
-    //     .then(data => {
-    //       setRowData(data);
-    //       setTimeout(() => setIsCallApi(false), 1000);
-    //     });
-    debugger
-    get('https://www.ag-grid.com/example-assets/olympic-winners.json')
+    api
+      .get('https://www.ag-grid.com/example-assets/olympic-winners.json')
       .then(res => {
-        debugger;
+        debugger
         setRowData(res);
-        setTimeout(() => setIsCallApi(false), 1000);
+        utils.clearTimeoutInstcs('progress');
+        utils.timeoutInstcs.progress = setTimeout(() => {
+          debugger
+          setIsCallApi(false);
+          utils.clearTimeoutInstcs('progress');
+        }, 1000);
       });
   }, []);
-    const onClick = () => {};
   
   return (
     <div className="ag-theme-alpine" style={{height: 500, width: '100%'}}>
-      {/* <Cpt.Button text={'test'} onClick={onClick} /> */}
+      <Cpt.Button text={'test'} onClick={onClick} />
       <AgGridReact
         className="ag-theme-alpine"
         animateRows="true"
@@ -94,6 +105,7 @@ const Home = () => {
         rowData={rowData}
         rowSelection="multiple"
         suppressRowClickSelection="true"
+        statusBar={statusBar}
       />
     </div>
   );
