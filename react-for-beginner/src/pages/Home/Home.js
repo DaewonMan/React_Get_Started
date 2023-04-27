@@ -41,6 +41,12 @@ import store from 'redux/store';
 //   );
 // };
 
+import Alert from '@mui/material/Alert';
+import CheckIcon from '@mui/icons-material/Check';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import Stack from '@mui/material/Stack';
+
+
 const MyRenderer = (params) => {
   return (
     <span className="my-renderer">
@@ -62,6 +68,7 @@ const Home = () => {
 
   const [gridApi, setGridApi] = useState();
   const [showArea, setShowArea] = useState('all');
+  const [isAlert, setIsAlert] = useState(false);
 
   // const dispatch = useDispatch();
   // const product = useSelector((state) => state.product);
@@ -84,9 +91,9 @@ const Home = () => {
   // never changes, so we can use useMemo
   const defaultColDef = {
       editable: true,
-      enableRowGroup: true,
-      enablePivot: true,
-      enableValue: true,
+      // enableRowGroup: true,
+      // enablePivot: true,
+      // enableValue: true,
       sortable: true,
       resizable: true,
       // filter: true,
@@ -160,9 +167,19 @@ const Home = () => {
     setShowArea(e.target.id);
   }, []);
   
+  const handleAlert = () => {
+    if(!!utils.timeoutInstcs.alert) return;
+
+    setIsAlert(true);
+    utils.timeoutInstcs.alert = setTimeout(() => {
+      setIsAlert(false);
+      utils.clearTimeoutInstcs('alert');
+    }, 1200);
+  };
+
   return (
     <div className="ag-theme-alpine" style={{height: 500, width: '100%', padding: '1rem'}}>
-      <Cpt.Button text={'test'} onClick={onClick2} />
+      <Cpt.Button text={'test'} onClick={handleAlert} />
       {/* https://mui.com/material-ui/react-table/ (mui 참고) */}
 
       <div style={{
@@ -196,6 +213,18 @@ const Home = () => {
         onGridReady={onGridReady}
       >
       </AgGridReact>
+
+      {isAlert && <Stack sx={{ width: '50%', zIndex: 1, position: 'absolute', top: '5%', right: '25%'}} spacing={2}>
+        {/* <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+          This is a success alert — check it out!
+        </Alert> */}
+        {/* <Alert variant="outlined" severity="warning">
+          This is a warning alert — check it out!
+        </Alert> */}
+        <Alert variant="standard" severity="error">
+          프로젝트를 선택하세요.
+        </Alert>
+      </Stack>}
     </div>
   );
 };
