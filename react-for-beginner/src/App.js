@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import styles from './App.module.css';
 import { Home, GridEx1 } from './pages';
 
+import { AlertDialog } from 'components';
+
 import _ from 'lodash';
 
 export const ApiContext = React.createContext();
@@ -22,6 +24,11 @@ function App() {
             <CircularProgress className={styles.progress} />
           </Box> 
         )}
+      
+      {<AlertDialog 
+        
+      />}
+
       <ApiContext.Provider value={{ isCallApi, setIsCallApi }}>
         <Routes>
           <Route path="/*" element={<Home />}></Route>
