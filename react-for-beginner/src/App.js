@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -23,14 +23,12 @@ function App() {
           </Box> 
         )}
       <ApiContext.Provider value={{ isCallApi, setIsCallApi }}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/gridEx1" element={<GridEx1 />}></Route>
-            {/* <Route path="/product/*" element={<Product />}></Route>
-            <Route path="*" element={<NotFound />}></Route> */}
-          </Routes>
-        </BrowserRouter>
+        <Routes>
+          <Route path="/*" element={<Home />}></Route>
+          <Route path="/gridEx1" element={<GridEx1 />}></Route>
+          {/* <Route path="/product/*" element={<Product />}></Route>
+          <Route path="*" element={<NotFound />}></Route> */}
+        </Routes>
       </ApiContext.Provider>
     </div>
   );

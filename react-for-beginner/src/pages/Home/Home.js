@@ -7,12 +7,19 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 
 import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
+// import 'ag-grid-community/styles/ag-grid.css';
+// import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 import { ApiContext } from 'App';
 
 import _ from 'lodash';
+
+
+// Redux
+import { useSelector, useDispatch } from 'react-redux';
+import { productAction } from 'redux/action/productAction';
+import store from 'redux/store';
+
 // import { AgGridReact } from '@ag-grid-community/react';
 // import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 // import { RangeSelectionModule } from '@ag-grid-enterprise/range-selection';
@@ -56,7 +63,12 @@ const Home = () => {
   const [gridApi, setGridApi] = useState();
   const [showArea, setShowArea] = useState('all');
 
-  const columnDefs = useMemo(() => [
+  // const dispatch = useDispatch();
+  // const product = useSelector((state) => state.product);
+  // const status = useSelector(productAction)
+
+
+  const columnDefs = [
     { field: 'athlete' },
     { field: 'age'},
     { field: 'country' },
@@ -67,10 +79,10 @@ const Home = () => {
     { field: 'silver' },
     { field: 'bronze' },
     { field: 'total' }
-  ], []);
+  ]
 
   // never changes, so we can use useMemo
-  const defaultColDef = useMemo(() => ({
+  const defaultColDef = {
       editable: true,
       enableRowGroup: true,
       enablePivot: true,
@@ -82,7 +94,7 @@ const Home = () => {
       minWidth: 100,
 
       cellStyle: { textAlign: 'center' }
-  }), []);
+  };
 
   const statusBar = useMemo(() => {
     return {
@@ -99,7 +111,7 @@ const Home = () => {
   // changes, needs to be state
   const [rowData, setRowData] = useState();
   
-  const onClick = useCallback(() => {
+  const onClick2 = useCallback(() => {
     setIsCallApi(true);
     // setRowData([]);
     utilsApi
@@ -115,6 +127,15 @@ const Home = () => {
         }, 1000);
       });
   }, []);
+  
+  const onClick = useCallback(() => {
+    // productAction.getProducts();
+    // dispatch(productAction.getProducts())
+
+    // console.log('store ===> ', store);
+    console.log('store.getState ===> ', store.getState().product.productList);
+    // console.log('product ===> ', product);
+  }, []);
 
   const onGridReady = useCallback((params) => {
     debugger
@@ -124,6 +145,9 @@ const Home = () => {
 
   useEffect(() => {
     // gridApi?.pushServerSideDatasource(params);
+    // console.log('store ===> ', store);
+    console.log('store.getState ===> ', store.getState().product.productList);
+    // console.log('product ===> ', product);
   }, []);
 
   useLayoutEffect(() => {
@@ -137,8 +161,8 @@ const Home = () => {
   }, []);
   
   return (
-    <div className="ag-theme-alpine" style={{height: 500, width: '100%'}}>
-      <Cpt.Button text={'test'} onClick={onClick} />
+    <div className="ag-theme-alpine" style={{height: 500, width: '100%', padding: '1rem'}}>
+      <Cpt.Button text={'test'} onClick={onClick2} />
       {/* https://mui.com/material-ui/react-table/ (mui 참고) */}
 
       <div style={{
@@ -157,7 +181,6 @@ const Home = () => {
       </div>
 
       <AgGridReact
-        className="ag-theme-alpine"
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
         rowData={rowData}
@@ -171,7 +194,8 @@ const Home = () => {
         pagination={true}
         paginationPageSize={100}
         onGridReady={onGridReady}
-      />
+      >
+      </AgGridReact>
     </div>
   );
 };
