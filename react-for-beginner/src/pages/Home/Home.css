@@ -1,0 +1,29 @@
+.top-total-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    /* padding-left: 0 !important; */
+    /* background-color: antiquewhite; */
+}
+
+.top-col {
+    /* border-right: 1px solid #000; */
+    /* padding: 0 18px 0 18px; */
+    /* background-color: red;
+    height: 100%;
+    width: 100%; */
+}
+
+.participant-group {
+    /* background-color: #00e7b1 !important; */
+    background-color: antiquewhite !important;
+    /* border-top: 1px solid #000; */
+    /* color: #fff */
+}
+
+.medals-group {
+    /* background-color: #5b9bd5 !important; */
+    background-color: antiquewhite !important;
+}
