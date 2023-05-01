@@ -66,6 +66,26 @@ const styles = {
 };
 
 //////////////=================================
+
+const createData = (count, prefix) => {
+  var result = [];
+  for (var i = 0; i < count; i++) {
+    result.push({
+      athlete: prefix + ' Athlete ' + i,
+      age: prefix + ' Age ' + i,
+      country: prefix + ' Country ' + i,
+      year: prefix + ' Year ' + i,
+      date: prefix + ' Date ' + i,
+      sport: prefix + ' Sport ' + i,
+    });
+  }
+  return result;
+};
+
+const CustomPinnedRowRenderer = (props) => {
+  return (<span style={props.style}>{props.value}</span>);
+};
+
 const MyGroupHeader = memo((props) => {
 
   const [expanded, setExpanded] = useState();
@@ -200,74 +220,125 @@ const Home = () => {
   //   { field: 'total' }
   // ], []);
 
-  const columnDefs = useMemo(() => [
+  // const columnDefs = useMemo(() => [
+  //   {
+  //     headerName: 'Total',
+  //     headerClass: 'medals-group',
+  //     resizable: false,
+  //     // headerGroupComponent: MyGroupHeader,
+  //     children: [
+  //         // { field: 'athlete', headerComponent: SortingHeader, columnGroupShow: 'open'  },
+  //         // { field: 'age', headerComponent: SortingHeader },
+  //         { field: 'athlete', align: 'center'  },
+  //         { field: 'age' },
+  //         { field: 'country' },
+  //         { field: 'year'},
+  //     ]
+  //   },
+  //   // {
+  //   //   headerName: 'Group B',
+  //   //   resizable: false,
+  //   //   headerGroupComponent: MyGroupHeader,
+  //   //   children: [
+  //   //       // { field: 'date', columnGroupShow: 'open' },
+  //   //       // { field: 'sport', columnGroupShow: 'open' },
+  //   //       { field: 'date' },
+  //   //       { field: 'sport' },
+  //   //       { field: 'gold' },
+  //   //       { field: 'silver' },
+  //   //       { field: 'bronze' },
+  //   //       { field: 'total' }
+  //   //   ]
+  //   // }
+  //   {
+  //     // field: 'testField',
+  //     headerName: '2',
+  //     headerClass: 'participant-group',
+  //     resizable: false,
+  //     // headerGroupComponent: MyGroupHeader,
+  //     children: [
+  //         { field: '02/01' },
+  //     ]
+  //   },
+  //   {
+  //     headerName: 3,
+  //     headerClass: 'participant-group',
+  //     resizable: false,
+  //     // headerGroupComponent: MyGroupHeader,
+  //     children: [
+  //         { field: '02/02' },
+  //     ]
+  //   },
+  //   {
+  //     headerName: 5,
+  //     headerClass: 'participant-group',
+  //     resizable: false,
+  //     // headerGroupComponent: MyGroupHeader,
+  //     children: [
+  //         { field: '02/03' },
+  //     ]
+  //   },
+  //   {
+  //     headerName: 3,
+  //     headerClass: 'participant-group',
+  //     resizable: false,
+  //     // headerGroupComponent: MyGroupHeader,
+  //     children: [
+  //         { field: '02/04' },
+  //     ]
+  //   },
+  // ], []);
+
+  const [columnDefs, setColumnDefs] = useState([
     {
-      headerName: 'Total',
-      headerClass: 'medals-group',
-      resizable: false,
-      // headerGroupComponent: MyGroupHeader,
-      children: [
-          // { field: 'athlete', headerComponent: SortingHeader, columnGroupShow: 'open'  },
-          // { field: 'age', headerComponent: SortingHeader },
-          { field: 'athlete', align: 'center'  },
-          { field: 'age' },
-          { field: 'country' },
-          { field: 'year'},
-      ]
-    },
-    // {
-    //   headerName: 'Group B',
-    //   resizable: false,
-    //   headerGroupComponent: MyGroupHeader,
-    //   children: [
-    //       // { field: 'date', columnGroupShow: 'open' },
-    //       // { field: 'sport', columnGroupShow: 'open' },
-    //       { field: 'date' },
-    //       { field: 'sport' },
-    //       { field: 'gold' },
-    //       { field: 'silver' },
-    //       { field: 'bronze' },
-    //       { field: 'total' }
-    //   ]
-    // }
-    {
-      // field: 'testField',
-      headerName: '2',
-      headerClass: 'participant-group',
-      resizable: false,
-      // headerGroupComponent: MyGroupHeader,
-      children: [
-          { field: '02/01' },
-      ]
+      field: 'athlete',
+      cellRendererSelector: (params) => {
+        if (params.node.rowPinned) {
+          return {
+            component: CustomPinnedRowRenderer,
+            params: {
+              style: { color: 'blue' },
+            },
+          };
+        } else {
+          // rows that are not pinned don't use any cell renderer
+          return undefined;
+        }
+      },
     },
     {
-      headerName: 3,
-      headerClass: 'participant-group',
-      resizable: false,
-      // headerGroupComponent: MyGroupHeader,
-      children: [
-          { field: '02/02' },
-      ]
+      field: 'age',
+      cellRendererSelector: (params) => {
+        if (params.node.rowPinned) {
+          return {
+            component: CustomPinnedRowRenderer,
+            params: {
+              style: { 'font-style': 'italic' },
+            },
+          };
+        } else {
+          // rows that are not pinned don't use any cell renderer
+          return undefined;
+        }
+      },
     },
-    {
-      headerName: 5,
-      headerClass: 'participant-group',
-      resizable: false,
-      // headerGroupComponent: MyGroupHeader,
-      children: [
-          { field: '02/03' },
-      ]
-    },
-    {
-      headerName: 3,
-      headerClass: 'participant-group',
-      resizable: false,
-      // headerGroupComponent: MyGroupHeader,
-      children: [
-          { field: '02/04' },
-      ]
-    },
-  ], []);
+    { field: 'country' },
+    { field: 'year' },
+    { field: 'date' },
+    { field: 'sport' },
+  ]);
+
+  const getRowStyle = useCallback((params) => {
+    if (params.node.rowPinned) {
+      return { 'font-weight': 'bold' };
+    }
+  }, []);
+  const pinnedTopRowData = useMemo(() => {
+    return createData(1, 'Top');
+  }, []);
+  const pinnedBottomRowData = useMemo(() => {
+    return createData(2, 'Bottom');
+  }, []);
 
   // never changes, so we can use useMemo
   const defaultColDef = useMemo(() => ({
@@ -368,6 +439,8 @@ const Home = () => {
     }, 1200);
   };
 
+  const gridRef = useRef();
+
   return (
     <div className="ag-theme-alpine" style={{height: 500, width: '100%', padding: '1rem'}}>
       {/* <Cpt.Button text={'test'} onClick={handleAlert} /> */}
@@ -407,6 +480,7 @@ const Home = () => {
       </AgGridReact> */}
 
       <AgGridReact
+        ref={gridRef}
         animateRows="true"
         rowGroupPanelShow="always"
         // enableRangeSelection="true"
@@ -417,6 +491,8 @@ const Home = () => {
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
         rowData={rowData}
+        getRowStyle={getRowStyle}
+        pinnedBottomRowData={pinnedBottomRowData}
       />
 
       {isAlert && <Stack sx={{ width: '50%', zIndex: 1, position: 'absolute', top: '5%', right: '25%'}} spacing={2}>
