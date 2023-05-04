@@ -72,9 +72,9 @@ const createData = (count, prefix) => {
   for (var i = 0; i < count; i++) {
     result.push({
       athlete: prefix + ' Athlete ' + i,
-      age: prefix + ' Age ' + i,
-      country: prefix + ' Country ' + i,
-      year: prefix + ' Year ' + i,
+      // age: prefix + ' Age ' + i,
+      // country: prefix + ' Country ' + i,
+      // year: prefix + ' Year ' + i,
       date: prefix + ' Date ' + i,
       sport: prefix + ' Sport ' + i,
     });
