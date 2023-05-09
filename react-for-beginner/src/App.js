@@ -14,29 +14,33 @@ import _ from 'lodash';
 export const ApiContext = React.createContext();
 
 function App() {
-  const [isCallApi, setIsCallApi] = useState(false);
+  const [toDo, setToDo] = useState("");
+  const [toDos, setToDos] = useState([]);
   
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if(toDo === "") {
+      return;
+    }
+    setToDos(currentArray => [toDo, ...currentArray]);
+    setToDo("");
+  };
+console.log(toDos)
   return (
     <div>
-      {isCallApi 
-        && (
-          <Box className={styles.progressBox}>
-            <CircularProgress className={styles.progress} />
-          </Box> 
-        )}
-      
-      {<AlertDialog 
-        
-      />}
-
-      <ApiContext.Provider value={{ isCallApi, setIsCallApi }}>
-        <Routes>
-          <Route path="/*" element={<Home />}></Route>
-          <Route path="/gridEx1" element={<GridEx1 />}></Route>
-          {/* <Route path="/product/*" element={<Product />}></Route>
-          <Route path="*" element={<NotFound />}></Route> */}
-        </Routes>
-      </ApiContext.Provider>
+      <h1>My To Dos ({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input 
+          value={toDo}
+          onChange={e => setToDo(e.target.value)}
+          type="text"
+          placeholder="input...."
+        />
+        <button>Add To Do</button>
+        <hr />
+        {toDos.map((x, idx) => 
+          <li key={idx}>{x.toUpperCase()}</li>)}
+      </form>
     </div>
   );
 }
